@@ -32,4 +32,7 @@ public class Block extends Pane {
         //rect.setFill(Color.BLACK);
         getChildren().add(rect);
     }
+    public Rectangle getPaneObject(){
+        return rect;
+    }
 }

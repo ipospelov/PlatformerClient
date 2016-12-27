@@ -25,6 +25,7 @@ public class View {
     public static int windowHeight = 400;
     public static int objectWidth = 20;
     public static int objectHeight = 20;
+    private Block currentBlock;
 
 
     public View(Stage primaryStage){
@@ -49,7 +50,6 @@ public class View {
     }
 
     public void setBackgroud(String file){
-        System.out.println(file);
         myBI= new BackgroundImage(new Image("file:"+file),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
@@ -82,4 +82,42 @@ public class View {
     public void setCharacterY(int y){
         character.setCoords(character.x, y);
     }
+
+    public boolean overBlockByY(int x, int y){
+        for (Block array : blocks){
+            if((x + View.objectWidth >= array.rect.getX() && x <= (array.rect.getX() + View.objectWidth)) &&
+             (y + View.objectHeight >= array.rect.getY() && y + View.objectHeight <= array.rect.getY() + View.objectHeight)){
+                currentBlock = array;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean overBlockByRightX(int x, int y){
+        for (Block array : blocks){
+            if((x + View.objectWidth >= array.rect.getX() && x + View.objectWidth <= array.rect.getX() + View.objectWidth)
+                    && character.rect.intersects(array.rect.getX(),array.rect.getY() + 5, View.windowWidth, View.objectHeight - 5))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean overBlockByLeftX(int x, int y){
+        for (Block array : blocks){
+            if((x  <= array.rect.getX() + View.objectWidth && x >= array.rect.getX())
+                    && character.rect.intersects(array.rect.getX(),array.rect.getY() + 5, View.windowWidth, View.objectHeight - 5))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Block getCurrentBlock(){
+        return currentBlock;
+    }
+
 }

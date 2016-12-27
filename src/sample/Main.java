@@ -57,13 +57,28 @@ public class Main extends Application {
 
     public void update(){
 
-        if(isPressed(KeyCode.RIGHT)) {
+        if(isPressed(KeyCode.RIGHT) && !gameView.overBlockByRightX(gameView.getCharacterX(), gameView.getCharacterY())) {
             gameView.setCharacterX( gameController.handleRight(gameView.getCharacterX()) );
         }
 
-        if(isPressed(KeyCode.LEFT)) {
+        if(isPressed(KeyCode.LEFT) && !gameView.overBlockByLeftX(gameView.getCharacterX(), gameView.getCharacterY())) {
             gameView.setCharacterX( gameController.handleLeft(gameView.getCharacterX()) );
         }
+
+        if(isPressed(KeyCode.UP) || gameController.iterationsAfterPush > 0) {
+            gameView.setCharacterY( gameController.handleUp(gameView.getCharacterY()) );
+        }
+
+        if(gameView.getCharacterY() - 1 >= View.windowHeight - View.objectHeight) {
+            gameController.setZeroGravity();
+            gameView.setCharacterY(View.windowHeight - View.objectHeight);
+        }
+
+        if(gameView.overBlockByY(gameView.getCharacterX(),gameView.getCharacterY())) {
+                gameController.setZeroGravity();
+        }else if(gameController.iterationsAfterPush == 0 && gameView.getCharacterY() < View.windowHeight - View.objectHeight)
+            gameController.setFullGravity();
+
 
 
     }
